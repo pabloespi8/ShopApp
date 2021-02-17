@@ -2,8 +2,8 @@ package com.example.shopapp.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.shopapp.R
@@ -21,6 +21,10 @@ class RegisterActivity : BaseActivity() {
         tv_login.setOnClickListener {
             val intent= Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        btn_register.setOnClickListener{
+            validateRegisterDetails()
         }
     }
 
@@ -48,6 +52,54 @@ class RegisterActivity : BaseActivity() {
         }
 
         toolbar_register_activity.setNavigationOnClickListener{onBackPressed()}
+    }
+
+    private fun validateRegisterDetails():Boolean{
+        //A function to validate the entries of a new user
+
+        return when{
+            TextUtils.isEmpty(et_first_name.text.toString().trim{it <= ' '})-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_last_name.text.toString().trim{it <= ' '})-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_email_register.text.toString().trim{it <= ' '})-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_password_register.text.toString().trim{it <= ' '})-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_password), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_confirm_password.text.toString().trim{it <= ' '})-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_confirm_password), true)
+                false
+            }
+
+            et_password_register.text.toString().trim{it <= ' '} !=et_confirm_password.text.toString()
+                .trim{it<=' '}-> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_password_and_confirm_password_mismatch), true)
+                false
+                }
+
+            !cb_terms_and_condition.isChecked -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_agree_terms_and_condition), true)
+                false
+            }
+
+            else -> {
+                showErrorSnackBar(resources.getString(R.string.registery_successfull), false)
+                true
+            }
+
+        }
 
     }
 }

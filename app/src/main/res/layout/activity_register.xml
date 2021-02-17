@@ -98,7 +98,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_last_name">
 
                 <com.example.shopapp.utils.MSPEditText
-                    android:id="@+id/et_email"
+                    android:id="@+id/et_email_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
@@ -121,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_email">
 
                 <com.example.shopapp.utils.MSPEditText
-                    android:id="@+id/et_password"
+                    android:id="@+id/et_password_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
