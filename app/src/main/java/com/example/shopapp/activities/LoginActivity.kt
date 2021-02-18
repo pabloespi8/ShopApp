@@ -4,10 +4,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.shopapp.R
+import com.example.shopapp.firestore.FirestoreClass
+import com.example.shopapp.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -89,17 +92,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             //Login using FirebaseAuth
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
 
-                hideProgressDialog()
-
                 if (task.isSuccessful){
-                    showErrorSnackBar("You are logged in successfully", false)
-                    //Now we should send user to MainActivity
+                   FirestoreClass().getUserDetails(this@LoginActivity)
                 }
                 else{
+                    hideProgressDialog()
                     showErrorSnackBar(task.exception!!.message.toString(), true)
                 }
 
             }
         }
+    }
+
+    fun userLoggedInSuccess(user: User){
+
+        hideProgressDialog()
+
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email: ", user.email)
+
+        //After login we redirect user to Main Activity
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
+
     }
 }

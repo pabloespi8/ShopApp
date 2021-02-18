@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.shopapp.R
+import com.example.shopapp.firestore.FirestoreClass
+import com.example.shopapp.models.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -113,8 +116,8 @@ class RegisterActivity : BaseActivity() {
     }
 
     private fun registerUser() {
-        //Check with validate function if the entries are valid or not
 
+        //Check with validate function if the entries are valid or not
         if (validateRegisterDetails()) {
 
             showProgressDialog(resources.getString(R.string.please_wait))
@@ -127,21 +130,25 @@ class RegisterActivity : BaseActivity() {
                 .addOnCompleteListener(
                     OnCompleteListener<AuthResult> { task ->
 
-                        hideProgressDialog()
-
                         //If the registration is successfully done
                         if (task.isSuccessful) {
                             //Firebase registered user
                             val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                            showErrorSnackBar(
-                                "You are registered successfully. Your user id is ${firebaseUser.uid}",
-                                false
+                            val user= User(
+                                firebaseUser.uid,
+                                et_first_name.text.toString().trim { it <= ' '},
+                                et_last_name.text.toString().trim { it <= ' '},
+                                et_email_register.text.toString().trim { it <= ' '}
+
                             )
 
-                            FirebaseAuth.getInstance().signOut() //We only want users login in the loginActivity
-                            finish() //Back to the login screen
+                            FirestoreClass().registerUser(this@RegisterActivity, user)
+                           // FirebaseAuth.getInstance().signOut() //We only want users login in the loginActivity
+                           // finish() //Back to the login screen
+
                         } else {
+                            hideProgressDialog()
                             //This appear when the signup fail
                             showErrorSnackBar(task.exception!!.message.toString(), true)
                         }
@@ -149,5 +156,13 @@ class RegisterActivity : BaseActivity() {
                 )
 
         }
+    }
+
+    fun userRegistrationSuccess(){
+
+        //Hide the progress dialog
+        hideProgressDialog()
+
+        Toast.makeText(this@RegisterActivity, resources.getString(R.string.register_success), Toast.LENGTH_SHORT).show()
     }
 }
