@@ -1,17 +1,16 @@
 package com.example.shopapp.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.shopapp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
+        fullScreen()
         setupActionBar()
     }
 
@@ -26,7 +25,7 @@ class ForgotPasswordActivity : BaseActivity() {
         }
         toolbar_forgot_password_activity.setNavigationOnClickListener { onBackPressed() }
 
-        btn_submit.setOnClickListener{
+        btn_save_details.setOnClickListener{
             val email= et_email_forgot_password.text.toString().trim { it <= ' ' }
             if(email.isEmpty()){
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)

@@ -36,7 +36,7 @@ open class BaseActivity : AppCompatActivity() {
         snackBar.show()
     }
 
-    private fun fullScreen() {
+    fun fullScreen() {
         //Si estamos en Android R utilizamos una forma para establecer la pantalla completa, sino, la forma vieja
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -49,7 +49,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-     fun showProgressDialog(text:String){
+    fun showProgressDialog(text:String){
          
          mProgressDialog=Dialog(this)
          

@@ -11,6 +11,7 @@ import android.view.WindowManager
 import com.example.shopapp.R
 import com.example.shopapp.firestore.FirestoreClass
 import com.example.shopapp.models.User
+import com.example.shopapp.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -25,19 +26,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         btn_login.setOnClickListener(this)
         tv_register.setOnClickListener(this)
 
-    }
-
-    private fun fullScreen() {
-        //Si estamos en Android R utilizamos una forma para establecer la pantalla completa, sino, la forma vieja
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
     }
 
     override fun onClick(v: View?){
@@ -108,12 +96,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         hideProgressDialog()
 
-        Log.i("First Name: ", user.firstName)
-        Log.i("Last Name: ", user.lastName)
-        Log.i("Email: ", user.email)
-
-        //After login we redirect user to Main Activity
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        if(user.profileCompleted==0){
+            val intent=Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USERS_DETAILS, user)
+            startActivity(intent)
+        }
+        else{
+            val intent=Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
         finish()
 
     }
