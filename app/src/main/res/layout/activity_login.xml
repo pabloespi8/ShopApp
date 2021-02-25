@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".activities.LoginActivity">
+    tools:context=".ui.i.activities.LoginActivity">
 
     <FrameLayout
         android:id="@+id/fl_header_image"
@@ -22,11 +22,11 @@
             android:layout_gravity="center"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
-            android:src="@drawable/tutorials_eu_logo" />
+            android:src="@drawable/salazonessaez" />
     </FrameLayout>
 
     <com.example.shopapp.utils.MSPTextViewBold
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
@@ -49,7 +49,7 @@
         android:textColorHint="@color/colorSecondaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_profile">
 
         <com.example.shopapp.utils.MSPEditText
             android:id="@+id/et_email_login"

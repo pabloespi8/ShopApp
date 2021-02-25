@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RegisterActivity">
+    tools:context=".ui.i.activities.RegisterActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_register_activity"
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.example.shopapp.utils.MSPTextViewBold
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_title_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
