@@ -7,7 +7,6 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.shopapp.R
 import com.example.shopapp.models.*
 import com.example.shopapp.ui.i.activities.*
 import com.example.shopapp.ui.i.fragments.DashboardFragment
@@ -71,30 +70,44 @@ class FirestoreClass {
                 Log.i(activity.javaClass.simpleName, document.toString())
 
                 //Here we have received the document snapshot which is converted into the User Data model object
-                val user =
-                    document.toObject(User::class.java)!! //convertimos lo que recibimos del data base en un objeto user para trabajar con él
+                try {
 
-                //Creating and instance from sharedpreferences
-                val sharedPreferences = activity.getSharedPreferences(
-                    Constants.MYSHOPPAL_PREFERENCES,
-                    Context.MODE_PRIVATE
-                )
+                    val user =
+                        document.toObject(User::class.java)!! //convertimos lo que recibimos del data base en un objeto user para trabajar con él
 
-                val editor: SharedPreferences.Editor = sharedPreferences.edit()
-                //KEY: looged_in_username - VALUE: firstName + lastName
+                    //Creating and instance from sharedpreferences
+                    val sharedPreferences = activity.getSharedPreferences(
+                        Constants.MYSHOPPAL_PREFERENCES,
+                        Context.MODE_PRIVATE
+                    )
 
-                editor.putString(Constants.LOGGED_IN_USERNAME, "${user.firstName} ${user.lastName}")
-                editor.apply()
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    //KEY: looged_in_username - VALUE: firstName + lastName
 
-                //START
-                when (activity) {
-                    is LoginActivity -> {
-                        //Call a function of base activity for transferring the result to it.
-                        activity.userLoggedInSuccess(user)
+                    editor.putString(
+                        Constants.LOGGED_IN_USERNAME,
+                        "${user.firstName} ${user.lastName}"
+                    )
+                    editor.apply()
+
+                    //START
+                    when (activity) {
+                        is LoginActivity -> {
+                            //Call a function of base activity for transferring the result to it.
+                            activity.userLoggedInSuccess(user)
+                        }
+                        is SettingsActivity -> {
+                            // Call a function of base activity for transferring the result to it.
+                            activity.userDetailsSuccess(user)
+                        }
                     }
-
+                    //END
                 }
-                //END
+                catch (e:Exception){
+                    Toast.makeText(activity, "Error al encontrar usuario", Toast.LENGTH_SHORT).show()
+                }
+
+
             }
             .addOnFailureListener { e ->
                 when (activity) {
@@ -122,7 +135,6 @@ class FirestoreClass {
                         activity.userProfileUpdateSuccess()
                     }
                 }
-
             }
             .addOnFailureListener { e ->
                 when (activity) {
@@ -131,10 +143,8 @@ class FirestoreClass {
                         activity.hideProgressDialog()
                     }
                 }
-
                 Log.e(activity.javaClass.simpleName, "Error while updating the user details", e)
             }
-
     }
 
     fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?, imageType: String) {
@@ -142,13 +152,12 @@ class FirestoreClass {
         //Le estamos poniendo el nombre de la constante USER_PROFILE_IMAGE, despues un numero que es el tiempo en milisegundos que pasa
         // y despues el nombre de la extensión que tenga
         //Por tanto se quedaría así: User_Profile_Image123456765432.jpg
-        val sRef: StorageReference = FirebaseStorage.getInstance().reference
-            .child(
-                imageType + System.currentTimeMillis() + "." + Constants.getFileExtension(
-                    activity,
-                    imageFileURI
-                )
+        val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
+            imageType + System.currentTimeMillis() + "." + Constants.getFileExtension(
+                activity,
+                imageFileURI
             )
+        )
         sRef.putFile(imageFileURI!!).addOnSuccessListener { taskSnapshot ->
             //The image upload is success
             Log.e("Firebase Image URL", taskSnapshot.metadata!!.reference!!.downloadUrl.toString())
@@ -608,9 +617,9 @@ class FirestoreClass {
             .addOnSuccessListener { document ->
                 val list: ArrayList<Order> = ArrayList()
 
-                for (i in document.documents){
-                    val orderItem= i.toObject(Order::class.java)!!
-                    orderItem.id= i.id
+                for (i in document.documents) {
+                    val orderItem = i.toObject(Order::class.java)!!
+                    orderItem.id = i.id
                     list.add(orderItem)
                 }
                 fragment.populateOrdersListInUI(list)

@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import com.example.shopapp.R
 import com.example.shopapp.firestore.FirestoreClass
+import com.example.shopapp.models.User
 import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.auth.User
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : BaseActivity() {
@@ -22,26 +22,18 @@ class SettingsActivity : BaseActivity() {
         //hideProgressDialog()
         tv_edit.setOnClickListener {
             val intent=Intent(this@SettingsActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USERS_DETAILS, mUserDetails)
             startActivity(intent)
-
-            //intent.putExtra(Constants.EXTRA_USERS_DETAILS, mUserDetails)
-
         }
 
         btn_logout.setOnClickListener { v: View ->
 
-            if (v != null) {
-                when (v.id) {
-                    R.id.btn_logout -> {
-                        FirebaseAuth.getInstance().signOut()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
+            FirebaseAuth.getInstance().signOut()
+
+            val intent=Intent(this, LoginActivity::class.java)
+            intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
 
         }
 
@@ -69,17 +61,18 @@ class SettingsActivity : BaseActivity() {
     private fun getUserDetails() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FirestoreClass().getUserDetails(this)
-        hideProgressDialog()
+        //hideProgressDialog()
     }
 
     fun userDetailsSuccess(user: User) {
+        mUserDetails=user
         hideProgressDialog()
-        /*
+
          GlideLoader(this@SettingsActivity).loadUserPicture(user.image, iv_user_photo)
          tv_name.text= "${user.firstName} ${user.lastName}"
          tv_gender.text=user.gender
          tv_email.text = user.email
-         tv_mobile_number.text="${user.mobile}" */
+         tv_mobile_number.text="${user.mobile}"
     }
 
     override fun onResume() {

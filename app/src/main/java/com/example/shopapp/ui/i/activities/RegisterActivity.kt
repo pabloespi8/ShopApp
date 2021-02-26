@@ -91,12 +91,9 @@ class RegisterActivity : BaseActivity() {
             }
 
             else -> {
-                //showErrorSnackBar(resources.getString(R.string.registery_successfull), false)
                 true
             }
-
         }
-
     }
 
     private fun registerUser() {
@@ -128,8 +125,6 @@ class RegisterActivity : BaseActivity() {
                             )
 
                             FirestoreClass().registerUser(this@RegisterActivity, user)
-                            //FirebaseAuth.getInstance().signOut() //We only want users login in the loginActivity
-                           //finish() //Back to the login screen
 
                         } else {
                             hideProgressDialog()
@@ -146,7 +141,8 @@ class RegisterActivity : BaseActivity() {
 
         //Hide the progress dialog
         hideProgressDialog()
-
         Toast.makeText(this@RegisterActivity, resources.getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 }

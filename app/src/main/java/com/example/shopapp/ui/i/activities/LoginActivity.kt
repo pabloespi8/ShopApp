@@ -83,7 +83,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     hideProgressDialog()
                     showErrorSnackBar(task.exception!!.message.toString(), true)
                 }
-
             }
         }
     }
@@ -93,7 +92,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         hideProgressDialog()
 
         if(user.profileCompleted==0){
-            val intent=Intent(this@LoginActivity, DashboardActivity::class.java)
+            val intent=Intent(this@LoginActivity, UserProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USERS_DETAILS, user)
             startActivity(intent)
         }
