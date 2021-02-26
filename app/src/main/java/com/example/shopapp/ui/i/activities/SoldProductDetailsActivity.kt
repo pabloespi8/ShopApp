@@ -86,5 +86,6 @@ class SoldProductDetailsActivity : BaseActivity() {
         tv_sold_product_sub_total.text = productDetails.sub_total_amount
         tv_sold_product_shipping_charge.text = productDetails.shipping_charge
         tv_sold_product_total_amount.text = productDetails.total_amount
+
     }
 }

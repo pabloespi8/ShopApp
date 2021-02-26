@@ -53,7 +53,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun showProgressDialog(text:String){
-         /*
+
          mProgressDialog=Dialog(this)
          
          //Set the screen content from a layout resource
@@ -63,11 +63,11 @@ open class BaseActivity : AppCompatActivity() {
          mProgressDialog.tv_progress_text.text = text
          mProgressDialog.setCancelable(false)
          mProgressDialog.setCanceledOnTouchOutside(false)
-         mProgressDialog.show() */
+         mProgressDialog.show()
      }
     
     fun hideProgressDialog(){
-       // mProgressDialog.dismiss()
+        mProgressDialog.dismiss()
     }
 
     fun doubleBackToExit(){
